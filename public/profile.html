@@ -3,21 +3,372 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile — GiftUp Clone</title>
-  <link rel="stylesheet" href="style.css">
+  <title>GiftUp — Профиль</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+      background-color: #0d0d0d;
+      background-image: url('https://i.imgur.com/2iMbv6U.png'); /* логотип GiftUp pattern */
+      background-repeat: repeat;
+      background-size: 180px;
+      background-blend-mode: overlay;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ===== Верхняя панель ===== */
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 30px;
+      color: #fff;
+      padding: 8px 14px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #222;
+      object-fit: cover;
+      margin-top: 10px;
+    }
+
+    .nickname {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* Баланс */
+    .balance {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a1a;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    .balance span {
+      color: #00aaff;
+    }
+
+    .plus {
+      background: #00aaff;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* ===== Основной блок ===== */
+    .profile-box {
+      width: 90%;
+      background: #151515;
+      border-radius: 20px;
+      margin-top: 20px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      height: 42px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+
+    .btn-blue {
+      background: #007aff;
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #555;
+      color: #fff;
+    }
+
+    .btn-outline:hover {
+      border-color: #007aff;
+    }
+
+    /* ===== Инвентарь ===== */
+    .inventory {
+      margin-top: 18px;
+    }
+
+    .inventory-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .sell-all {
+      color: #007aff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .inventory-list {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .item {
+      flex: 1;
+      height: 60px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0.4;
+    }
+
+    /* ===== Блок приглашения ===== */
+    .invite-box {
+      background: #1a1a1a;
+      border-radius: 20px;
+      margin-top: 18px;
+      padding: 15px;
+    }
+
+    .invite-box p {
+      font-size: 15px;
+      margin: 0;
+      color: #ddd;
+      line-height: 1.3em;
+    }
+
+    .invite-btns {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .invite-btn {
+      background: #007aff;
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 15px;
+    }
+
+    .invite-terms {
+      background: transparent;
+      border: none;
+      color: #007aff;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Баланс/Рефералы */
+    .bottom-info {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #bbb;
+    }
+
+    .withdraw-btn {
+      background: #333;
+      color: #888;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* ===== Модальное окно ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 20px;
+    }
+
+    .modal-content {
+      background: #1a1a1a;
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.6);
+    }
+
+    .modal h2 {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      color: #888;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .modal button {
+      background: #007aff;
+      border: none;
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 25px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== Нижняя панель ===== */
+    .navbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+
+    .nav-item {
+      color: #aaa;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: #007aff;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>👤 Профиль</h2>
-    <p>Баланс: <b>100 💎</b></p>
-    <button>Пополнить</button>
-    <button>Вывести</button>
+
+  <div class="top-bar">
+    <button class="close-btn">✕ Закрыть</button>
   </div>
 
-  <div class="navbar">
-    <a href="cases.html">🎁 Cases</a>
-    <a href="crash.html">🚀 Crash</a>
-    <a href="profile.html" class="active">👤 Profile</a>
+  <img src="https://i.imgur.com/YrO1gA6.png" alt="Avatar" class="avatar">
+  <div class="nickname">CrashSystem</div>
+  <div class="balance">
+    <img src="https://i.imgur.com/ckzHe9z.png" width="16">
+    <span>0.00</span>
+    <div class="plus">+</div>
   </div>
+
+  <div class="profile-box">
+    <div class="buttons">
+      <button class="btn btn-blue">Пополнить 🎁</button>
+      <button class="btn btn-outline">Пополнить 💎</button>
+    </div>
+
+    <div class="inventory">
+      <div class="inventory-top">
+        <span>Инвентарь (0)</span>
+        <span class="sell-all" id="openInventory">Продать все</span>
+      </div>
+      <div class="inventory-list">
+        <div class="item">🎁</div>
+        <div class="item">🎁</div>
+        <div class="item">➡️</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="invite-box">
+    <p>Зарабатывайте 10% от депозитов ваших друзей</p>
+    <div class="invite-btns">
+      <button class="invite-btn">Пригласить</button>
+      <button class="invite-terms">Условия</button>
+    </div>
+    <div class="bottom-info">
+      <span>Баланс: 0.00 💎<br>Рефералов: 0</span>
+      <button class="withdraw-btn">Вывод</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div class="modal" id="inventoryModal">
+    <div class="modal-content">
+      <h2>Инвентарь</h2>
+      <p>Инвентарь пуст</p>
+      <button id="closeModal">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Нижняя панель -->
+  <div class="navbar">
+    <div class="nav-item">🎁<br>Кейсы</div>
+    <div class="nav-item">🚀<br>Краш</div>
+    <div class="nav-item active">👤<br>Профиль</div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('inventoryModal');
+    const openBtn = document.getElementById('openInventory');
+    const closeBtn = document.getElementById('closeModal');
+
+    openBtn.addEventListener('click', () => modal.style.display = 'flex');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+  </script>
+
 </body>
 </html>

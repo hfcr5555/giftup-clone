@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GiftUp — Загрузка</title>
+  <style>
+    body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;background:#0d0d0d;}
+    canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+    .rocket{width:120px;z-index:1}
+    .progress{width:80%;height:10px;background:#222;border-radius:999px;overflow:hidden;margin-top:32px;z-index:1}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,#007aff,#3b82f6);transition:width .25s}
+    .fade{opacity:0;transition:opacity .5s}
+    .fallback{width:120px;height:120px;border-radius:60px;background:#1f1f1f;display:flex;align-items:center;justify-content:center;color:#7aa7ff;font:600 14px/1 system-ui}
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+
+  <!-- Попробуем загрузить GIF; если 404 — покажем заглушку -->
+  <img id="rocket" src="images/rocket.gif" alt="Rocket" class="rocket" onerror="
+    this.replaceWith(Object.assign(document.createElement('div'),{className:'fallback',textContent:'🚀'}));
+  " />
+
+  <div class="progress"><div id="bar" class="bar"></div></div>
+
+  <script>
+    // --- звездное небо ---
+    const cvs = document.getElementById('stars');
+    const ctx = cvs.getContext('2d');
+    function fit(){ cvs.width = innerWidth; cvs.height = innerHeight }
+    addEventListener('resize', fit); fit();
+    const stars = Array.from({length:100},()=>({
+      x: Math.random()*cvs.width, y: Math.random()*cvs.height,
+      r: Math.random()*2, v: 0.5+Math.random()*1.5
+    }));
+    (function loop(){
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      ctx.fillStyle='#fff';
+      stars.forEach(s=>{
+        ctx.globalAlpha = 0.3+Math.random()*0.7;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+        s.y += s.v; if(s.y>cvs.height) s.y=0;
+      });
+      requestAnimationFrame(loop);
+    })();
+
+    // --- прогресс + антизалипание ---
+    const bar = document.getElementById('bar');
+    let p = 0;
+    const t = setInterval(()=>{
+      p = Math.min(100, p + 8 + Math.random()*12);
+      bar.style.width = p + '%';
+      if (p >= 100) done();
+    }, 250);
+
+    // жесткий таймаут: максимум 4 сек
+    const hard = setTimeout(done, 4000);
+
+    function done(){
+      clearInterval(t); clearTimeout(hard);
+      document.body.classList.add('fade');
+      setTimeout(()=> location.href='cases.html', 450);
+    }
+  </script>
+</body>
+</html>

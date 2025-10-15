@@ -1,47 +1,276 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cases — GiftUp Clone</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GiftUp — Кейсы</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+      background-color: #0d0d0d;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Верхняя панель */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: #111;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #222;
+      object-fit: cover;
+    }
+
+    .nickname {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .balance {
+      background: #1a1a1a;
+      padding: 6px 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+
+    .balance span {
+      color: #00aaff;
+    }
+
+    .plus {
+      background: #00aaff;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Блок подписки */
+    .subscribe-banner {
+      background: linear-gradient(90deg, #007aff, #00c6ff);
+      margin: 15px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .subscribe-banner span {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .subscribe-btn {
+      background: white;
+      color: #007aff;
+      font-weight: 600;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Категории */
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 0 15px 10px;
+    }
+
+    .category {
+      background: #1a1a1a;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .category.live {
+      color: #00ff00;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    /* Переключатель */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      font-weight: 600;
+      color: #aaa;
+    }
+
+    .tab.active {
+      border-color: #007aff;
+      color: #fff;
+    }
+
+    /* Кейсы */
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 15px 80px;
+    }
+
+    .case-card {
+      background: #1a1a1a;
+      border-radius: 15px;
+      text-align: center;
+      padding: 12px;
+      transition: 0.2s;
+    }
+
+    .case-card:hover {
+      transform: scale(1.03);
+    }
+
+    .case-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .price {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* Нижняя панель */
+    .navbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+
+    .nav-item {
+      color: #aaa;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .nav-item.active {
+      color: #007aff;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>🎁 Кейсы</h2>
-    <div id="cases-list" style="display:flex;flex-wrap:wrap;gap:15px;justify-content:center;"></div>
+
+  <!-- Верхняя панель -->
+  <div class="top-bar">
+    <div class="top-left">
+      <img src="https://i.imgur.com/YrO1gA6.png" class="avatar" alt="Avatar" />
+      <div class="nickname">CrashSystem</div>
+    </div>
+    <div class="balance">
+      <img src="https://i.imgur.com/ckzHe9z.png" width="14" />
+      <span>0.08</span>
+      <div class="plus">+</div>
+    </div>
   </div>
 
+  <!-- Баннер подписки -->
+  <div class="subscribe-banner">
+    <span>Подпишись на нас</span>
+    <button class="subscribe-btn">Подписаться</button>
+  </div>
+
+  <!-- Категории -->
+  <div class="categories">
+    <div class="category live">LIVE</div>
+    <div class="category">🍭</div>
+    <div class="category">🔮</div>
+    <div class="category">🎩</div>
+    <div class="category">🌸</div>
+    <div class="category">🪙</div>
+  </div>
+
+  <!-- Переключатель -->
+  <div class="tabs">
+    <div class="tab active">Платные</div>
+    <div class="tab">Бесплатные</div>
+  </div>
+
+  <!-- Кейсы -->
+  <div class="cases">
+    <div class="case-card">
+      <img src="https://i.imgur.com/bwsqvEa.png" alt="case1" />
+      <div class="price">💎 0.1</div>
+    </div>
+    <div class="case-card">
+      <img src="https://i.imgur.com/lzSK7iq.png" alt="case2" />
+      <div class="price">💎 0.5</div>
+    </div>
+    <div class="case-card">
+      <img src="https://i.imgur.com/VU1ZbZw.png" alt="case3" />
+      <div class="price">💎 1</div>
+    </div>
+    <div class="case-card">
+      <img src="https://i.imgur.com/gkDsvbW.png" alt="case4" />
+      <div class="price">💎 1</div>
+    </div>
+  </div>
+
+  <!-- Нижняя навигация -->
   <div class="navbar">
-    <a href="cases.html" class="active">🎁 Cases</a>
-    <a href="crash.html">🚀 Crash</a>
-    <a href="profile.html">👤 Profile</a>
+    <div class="nav-item active">🎁<br>Кейсы</div>
+    <div class="nav-item">🚀<br>Краш</div>
+    <div class="nav-item">👤<br>Профиль</div>
   </div>
 
-  <script>
-    const cases = [
-      { name: "Bronze Case", price: 10, color: "#cd7f32" },
-      { name: "Silver Case", price: 25, color: "#c0c0c0" },
-      { name: "Gold Case", price: 50, color: "#ffd700" },
-    ];
-
-    const list = document.getElementById("cases-list");
-
-    cases.forEach(c => {
-      const div = document.createElement("div");
-      div.style.background = c.color;
-      div.style.width = "100px";
-      div.style.height = "100px";
-      div.style.borderRadius = "15px";
-      div.style.display = "flex";
-      div.style.flexDirection = "column";
-      div.style.justifyContent = "center";
-      div.style.alignItems = "center";
-      div.style.color = "#000";
-      div.innerHTML = `<b>${c.name}</b><br><small>${c.price} 💎</small>`;
-      div.onclick = () => alert(`Ты открыл ${c.name}!`);
-      list.appendChild(div);
-    });
-  </script>
 </body>
 </html>
