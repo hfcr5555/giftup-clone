@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crash — GiftUp Clone</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>🚀 Crash Game (демо)</h2>
+    <p>Множитель: <span id="mult">1.00x</span></p>
+    <button id="bet">Играть</button>
+  </div>
+
+  <div class="navbar">
+    <a href="cases.html">🎁 Cases</a>
+    <a href="crash.html" class="active">🚀 Crash</a>
+    <a href="profile.html">👤 Profile</a>
+  </div>
+
+  <script>
+    const multEl = document.getElementById("mult");
+    const btn = document.getElementById("bet");
+    let active = false, multiplier = 1.00;
+
+    btn.onclick = () => {
+      if (active) return;
+      active = true;
+      multiplier = 1.00;
+      const interval = setInterval(() => {
+        multiplier += Math.random() * 0.2;
+        multEl.textContent = multiplier.toFixed(2) + "x";
+        if (Math.random() < 0.05) {
+          clearInterval(interval);
+          multEl.textContent = "💥 Краш!";
+          active = false;
+        }
+      }, 300);
+    };
+  </script>
+</body>
+</html>

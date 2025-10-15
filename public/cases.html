@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cases — GiftUp Clone</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>🎁 Кейсы</h2>
+    <div id="cases-list" style="display:flex;flex-wrap:wrap;gap:15px;justify-content:center;"></div>
+  </div>
+
+  <div class="navbar">
+    <a href="cases.html" class="active">🎁 Cases</a>
+    <a href="crash.html">🚀 Crash</a>
+    <a href="profile.html">👤 Profile</a>
+  </div>
+
+  <script>
+    const cases = [
+      { name: "Bronze Case", price: 10, color: "#cd7f32" },
+      { name: "Silver Case", price: 25, color: "#c0c0c0" },
+      { name: "Gold Case", price: 50, color: "#ffd700" },
+    ];
+
+    const list = document.getElementById("cases-list");
+
+    cases.forEach(c => {
+      const div = document.createElement("div");
+      div.style.background = c.color;
+      div.style.width = "100px";
+      div.style.height = "100px";
+      div.style.borderRadius = "15px";
+      div.style.display = "flex";
+      div.style.flexDirection = "column";
+      div.style.justifyContent = "center";
+      div.style.alignItems = "center";
+      div.style.color = "#000";
+      div.innerHTML = `<b>${c.name}</b><br><small>${c.price} 💎</small>`;
+      div.onclick = () => alert(`Ты открыл ${c.name}!`);
+      list.appendChild(div);
+    });
+  </script>
+</body>
+</html>

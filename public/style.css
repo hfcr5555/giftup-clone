@@ -1,0 +1,54 @@
+body {
+  background: #0d0d0d;
+  color: white;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+button {
+  background: linear-gradient(90deg, #ff3cac, #784ba0, #2b86c5);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Нижняя панель навигации */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #141414;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.navbar a {
+  color: #999;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.navbar a.active {
+  color: #fff;
+}
